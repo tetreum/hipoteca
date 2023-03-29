@@ -98,15 +98,15 @@
 
               <div class="flex-feature">
                   <span class="txt-medium">Impuestos y gastos:</span>
-                  <span><span class="txt-medium">14.575</span> €</span>
+                  <span><span id="cost"></span> €</span>
               </div>
               <div class="flex-feature">
                   <span class="txt-medium">Importe del préstamo: </span>
-                  <span class="txt-medium txt-bold"><span>104.575</span> €</span>
+                  <span><span id="total"></span> €</span>
               </div>
               <div>
-                  <strong class="txt-medium txt-bold">Tu cuota mensual:</strong>
-                  <strong class="txt-medium txt-bold"><span>1.368</span> €</strong>
+                  <strong class="txt-medium txt-bold">Cuota mensual:</strong>
+                  <strong><span id="monthly-fee">1.368</span> €</strong>
               </div>
           </div>
         </div>
@@ -124,7 +124,8 @@
                     registry: 300,
                     agency: 300,
                     taxes: 300,
-                }
+                };
+                this.formatter = new Intl.NumberFormat("de-DE");
 
                 this.setupForm();
                 this.setupListeners();
@@ -142,13 +143,31 @@
                 })
             }
 
+            getInt (fieldName) {
+                return parseInt(this.fields[fieldName].rawValue);
+            }
+
+            getFloat (fieldName) {
+                return parseFloat(this.fields[fieldName].rawValue);
+            }
+
             getHousePrice () {
-                return parseInt(this.fields["house-price"].rawValue);
+                return this.getInt("house-price");
             }
 
             updateSummary () {
-                const cost = this.calculateRegistryCost();
-                console.log(cost);
+                //const cost = this.calculateRegistryCost();
+                const years = this.getInt("years");
+                const interestPercent = this.getFloat("interest-percent");
+                const housePrice = this.getHousePrice();
+                const cost = (housePrice / 10000) * 1000;
+                const totalCredit = cost + housePrice;
+                const realCost = (totalCredit * interestPercent) * years;
+                const monthlyFee = realCost / (years * 12);
+
+                document.getElementById('cost').innerHTML = this.formatter.format(cost);
+                document.getElementById('total').innerHTML = this.formatter.format(totalCredit);
+                document.getElementById('monthly-fee').innerHTML = this.formatter.format(monthlyFee);
             }
 
             calculateRegistryCost () {
