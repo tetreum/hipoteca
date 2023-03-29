@@ -159,11 +159,12 @@
             updateSummary () {
                 //const cost = this.calculateRegistryCost();
                 const years = this.getInt("years");
+                const contribution = this.getInt("contribution");
                 const interestPercent = this.getFloat("interest-percent");
                 const housePrice = this.getHousePrice();
                 const cost = (housePrice / 10000) * 1000;
-                const totalCredit = cost + housePrice;
-                const interests = (totalCredit * interestPercent) * years;
+                const totalCredit = cost + housePrice - contribution;
+                const interests = ((totalCredit * interestPercent) / 100) * years;
                 const realCost = interests + totalCredit;
                 const monthlyFee = realCost / (years * 12);
 
