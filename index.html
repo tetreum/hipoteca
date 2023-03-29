@@ -166,7 +166,7 @@
                 const totalCredit = cost + housePrice - contribution;
                 const interests = ((totalCredit * interestPercent) / 100) * years;
                 const realCost = interests + totalCredit;
-                const monthlyFee = realCost / (years * 12);
+                const monthlyFee = Math.round(realCost / (years * 12));
 
                 document.getElementById('cost').innerHTML = this.formatter.format(cost);
                 document.getElementById('total').innerHTML = this.formatter.format(totalCredit);
