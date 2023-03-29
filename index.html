@@ -74,13 +74,13 @@
                           <label>Tipo de interés</label>
                           <div class="d-flex justify-content-between">
                               <div class="form-check">
-                                  <input name="interest-type" id="fixed" type="radio" class="form-check-input" checked>
+                                  <input name="interest-type" value="fixed" id="fixed" type="radio" class="form-check-input" checked>
                                   <label class="form-check-label" for="fixed">
                                       Fijo
                                   </label>
                               </div>
                               <div class="form-check">
-                                  <input name="interest-type" id="variable" type="radio" class="form-check-input">
+                                  <input name="interest-type" value="variable" id="variable" type="radio" class="form-check-input">
                                   <label class="form-check-label" for="variable">
                                       Variable
                                   </label>
@@ -156,15 +156,38 @@
                 return this.getInt("house-price");
             }
 
+            calculateInterests (totalCredit, years) {
+                const interestPercent = this.getFloat("interest-percent");
+                const type = document.querySelector('[name="interest-type"]:checked').value;
+
+                if (type === 'fixed') {
+                    return ((totalCredit * interestPercent) / 100) * years;
+                } else {
+                    let interest;
+                    for (let i = 0; i < years; i++) {
+                        interest += (totalCredit * this.generateRandomNum(interestPercent)) / 100;
+                    }
+                    return interest;
+                }
+            }
+
+            generateRandomNum(base) {
+                const min = Math.max(base - 2, 0.1);
+                const max = base + 2;
+                
+                const randomNum = Math.random() * (max - min) + min;
+                
+                return parseFloat(randomNum.toFixed(2));
+            }
+
             updateSummary () {
                 //const cost = this.calculateRegistryCost();
                 const years = this.getInt("years");
                 const contribution = this.getInt("contribution");
-                const interestPercent = this.getFloat("interest-percent");
                 const housePrice = this.getHousePrice();
                 const cost = (housePrice / 10000) * 1000;
                 const totalCredit = cost + housePrice - contribution;
-                const interests = ((totalCredit * interestPercent) / 100) * years;
+                const interests = this.calculateInterests(totalCredit, years);
                 const realCost = interests + totalCredit;
                 const monthlyFee = Math.round(realCost / (years * 12));
 
