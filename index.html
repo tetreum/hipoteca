@@ -163,7 +163,7 @@
                 if (type === 'fixed') {
                     return ((totalCredit * interestPercent) / 100) * years;
                 } else {
-                    let interest;
+                    let interest = 0;
                     for (let i = 0; i < years; i++) {
                         interest += (totalCredit * this.generateRandomNum(interestPercent)) / 100;
                     }
