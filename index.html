@@ -106,7 +106,7 @@
               </div>
               <div class="fs-4">
                   <strong>Cuota mensual:</strong>
-                  <strong><span id="monthly-fee">1.368</span> €/mes</strong>
+                  <strong><span id="monthly-fee"></span> €/mes</strong>
               </div>
           </div>
         </div>
@@ -129,6 +129,7 @@
 
                 this.setupForm();
                 this.setupListeners();
+                this.updateSummary();
             }
 
             setupForm () {
@@ -263,7 +264,7 @@
 
                 this.fields["house-price"].domElement.addEventListener('change', () => {
                     const housePrice = this.getHousePrice();
-                    const contribution = this.getInt("contribution")];
+                    const contribution = this.getInt("contribution");
                     document.querySelector('[data-for="contribution"] input[type="range"]').max = housePrice;
 
                     if (contribution > housePrice) {
